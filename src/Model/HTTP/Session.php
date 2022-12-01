@@ -1,6 +1,6 @@
 <?php
 
-namespace App\AgoraScript\Model\HTTP;
+namespace App\SIDAQuest\Model\HTTP;
 use App\SIDAQuest\Config\Conf;
 use Exception;
 

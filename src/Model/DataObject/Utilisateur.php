@@ -15,7 +15,7 @@ class Utilisateur extends AbstractDataObject {
     }
 
 
-    public function formatTableau() : array { return ["passwordTag" => $this->mdpHache];
+    public function formatTableau() : array { return ["loginTag" => $this->login, "passwordTag" => $this->mdpHache];
     }
 
     /**
@@ -40,7 +40,7 @@ class Utilisateur extends AbstractDataObject {
     public function setLogin(string $login) : void { $this->login = $login; }
 
     public static function construireDepuisFormulaire(array $tableauFormulaire) : Utilisateur {
-        $mdpHache = MotDePasse::hacher($tableauFormulaire['mdp']);
+        $mdpHache = MotDePasse::hacher($tableauFormulaire['password']);
         return new Utilisateur($tableauFormulaire['login'], $mdpHache);
     }
 }
