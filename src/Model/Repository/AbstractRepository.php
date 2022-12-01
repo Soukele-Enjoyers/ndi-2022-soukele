@@ -3,124 +3,82 @@
 namespace App\SIDAQuest\Model\Repository;
 
 use App\SIDAQuest\Model\DataObject\AbstractDataObject;
+use PDO;
+use PDOException;
 
 abstract class AbstractRepository
 {
 
-    protected abstract function getNomTable(): string;
+    protected abstract function getNomTable() : string;
 
-    protected abstract function construire(array $objetFormatTableau): AbstractDataObject;
+    protected abstract function construire(array $objetFormatTableau) : AbstractDataObject;
 
-    protected abstract function getNomClePrimaire(): string;
+    protected abstract function getNomClePrimaire() : string;
 
-    protected abstract function getNomsColonnes(): array;
+    protected abstract function getNomsColonnes() : array;
 
-    public function selectAll(): array
-    {
+    public function selectAll() : array {
         $tab = [];
-        $nom = $this->getNomTable();
-
-        $sql = "SELECT * FROM $nom";
-
-        $values = array(
-        );
-
+        $sql = "SELECT * FROM {$this->getNomTable()};";
         $pdoStatement = DatabaseConnection::getPdo()->prepare($sql);
-        $pdoStatement->execute($values);
-
+        $pdoStatement->setFetchMode(PDO::FETCH_ASSOC);
+        $pdoStatement->execute();
         foreach ($pdoStatement as $objectFormatTab) {
             $tab[] = $this->construire($objectFormatTab);
         }
         return $tab;
     }
 
-    public function update(AbstractDataObject $object): void
-    {
-
-        $nomColonnes = $this->getNomsColonnes();
-        $nom = $this->getNomTable();
-        $nomClesPrimaire = $this->getNomClePrimaire();
-
-        $sql = "UPDATE $nom SET $nomClesPrimaire=:clesPrimaireTag";
-
-        foreach ($nomColonnes as $colonne) {
-            $sql .= ", $colonne=:$colonne" . "Tag ";
-        }
-
-        $sql .= "WHERE $nomClesPrimaire=:clesPrimaireTag";
-
+    public function update(AbstractDataObject $object) : bool {
+        $nomClePrimaire = $this->getNomClePrimaire();
+        $sql = "UPDATE {$this->getNomTable()} SET $nomClePrimaire = :{$nomClePrimaire}Tag";
+        foreach ($this->getNomsColonnes() as $colonne) $sql .= ", $colonne = :{$colonne}Tag ";
+        $sql .= "WHERE $nomClePrimaire = :{$nomClePrimaire}Tag;";
         $pdoStatement = DatabaseConnection::getPdo()->prepare($sql);
-
         $values = $object->formatTableau();
-
-        $pdoStatement->execute($values);
+        try {
+            $pdoStatement->execute($values);
+            return true;
+        } catch (PDOException $e) {
+            return false;
+        }
     }
 
-    public function save(AbstractDataObject $object): void
-    {
-        $nom = $this->getNomTable();
-        $nomColonnes = $this->getNomsColonnes();
-
-        $nomClesPrimaire = $this->getNomClePrimaire();
-
-        $sql = "INSERT INTO $nom VALUES (:clesPrimaireTag";
-
-        foreach ($nomColonnes as $colonne){
-            $sql .= ", :$colonne" . "Tag";
-        }
-
+    public function create(AbstractDataObject $object) : bool {
+        $sql = "INSERT INTO {$this->getNomTable()} VALUES (:{$this->getNomClePrimaire()}Tag";
+        foreach ($this->getNomsColonnes() as $colonne) $sql .= ", :{$colonne}Tag";
         $sql .= ");";
-
         $pdoStatement = DatabaseConnection::getPdo()->prepare($sql);
-
         $values = $object->formatTableau();
-
-        $pdoStatement->execute($values);
+        try {
+            $pdoStatement->execute($values);
+            return true;
+        } catch (PDOException $e) {
+            return false;
+        }
     }
 
-    public function delete(string $valeurClePrimaire): ?string
-    {
-
-        $nom = $this->getNomTable();
-        $clesPrimaire = $this->getNomClePrimaire();
-
-        $sql = "DELETE FROM $nom WHERE $clesPrimaire=:clesPrimaireTag";
-
-        if (is_null(self::select($valeurClePrimaire))) return null;
-
-        // Préparation de la requête
+    public function delete(string $valeurClePrimaire) : bool {
+        $clePrimaire = $this->getNomClePrimaire();
+        $sql = "DELETE FROM {$this->getNomTable()} WHERE $clePrimaire = :{$clePrimaire}Tag;";
         $pdoStatement = DatabaseConnection::getPdo()->prepare($sql);
-
-        $values = array(
-            "clesPrimaireTag" => $valeurClePrimaire,
-            //nomdutag => valeur, ...
-        );
-        // On donne les valeurs et on exécute la requête
-        $pdoStatement->execute($values);
-
-        return "$nom de clé primaire : $valeurClePrimaire à bien été supprimée !";
+        $values = ["{$clePrimaire}Tag" => $valeurClePrimaire];
+        try {
+            $pdoStatement->execute($values);
+            return true;
+        } catch (PDOException $e) {
+            return false;
+        }
     }
 
-    public function select(string $valeurClePrimaire): ?AbstractDataObject
-    {
-        $nom = $this->getNomTable();
-        $clesPrimaire = $this->getNomClePrimaire();
-        $sql = "SELECT * from $nom WHERE $clesPrimaire=:clesPrimaireTag";
-        // Préparation de la requête
+    public function select(string $valeurClePrimaire) : ?AbstractDataObject {
+        $clePrimaire = $this->getNomClePrimaire();
+        $sql = "SELECT * FROM {$this->getNomTable()} WHERE $clePrimaire = :{$clePrimaire}Tag;";
         $pdoStatement = DatabaseConnection::getPdo()->prepare($sql);
-
-        $values = array(
-            "clesPrimaireTag" => $valeurClePrimaire,
-            //nomdutag => valeur, ...
-        );
-        // On donne les valeurs et on exécute la requête
+        $values = ["{$clePrimaire}Tag" => $valeurClePrimaire];
         $pdoStatement->execute($values);
-
-        // On récupère les résultats comme précédemment
-        // Note: fetch() renvoie false si pas de voiture correspondante
+        $pdoStatement->setFetchMode(PDO::FETCH_ASSOC);
         $objet = $pdoStatement->fetch();
-        if (!$objet) return null;
-
-        return $this->construire($objet);
+        return $objet ? $this->construire($objet) : null;
     }
 }
