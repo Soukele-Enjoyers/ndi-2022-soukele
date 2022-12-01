@@ -142,8 +142,13 @@ class ControllerUtilisateur extends Controller
     public static function delete(): void
     {
         $message = (new UtilisateurRepository())->delete($_POST['login']);
+
         if (is_null($message)) self::error("Le supression n'a pas fonctionnée");
-        ControllerQuestion::readAll(1);
+        else{
+            MessageFlash::ajouter("success", "L'utilisateur a bien été supprimé !");
+            ControllerUtilisateur::create();
+        }
+
     }
 
 

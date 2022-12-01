@@ -8284,12 +8284,12 @@ textarea.form-control-lg {
   background-image: var(--bs-gradient) !important;
 }
 
-.bg-image {
-  /*background-image: url("../../img/bglight.jpg");*/
-  background-image: url("../../img/pexels-alexander-kovalev-2847648.jpg");
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
+.bg-color {
+  background-color: #111827;
+}
+
+.bg-color2 {
+  background-color: #111827;
 }
 
 .user-select-all {

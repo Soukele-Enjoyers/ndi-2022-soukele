@@ -10,16 +10,16 @@ use App\SIDAQuest\Lib\MessageFlash;
 <head>
     <meta charset="UTF-8">
     <title><?php echo $pagetitle; ?></title>
-    <!-- <link href="css/styles/style.css" rel="stylesheet" type="text/css"> -->
+
     <link href="css/styles/bootstrap.css" rel="stylesheet" type="text/css">
 </head>
-<body class="bg-image d-flex flex-column h-100">
+<body class="bg-secondary text-white d-flex flex-column h-100">
 <header class="fw-bold h-25 d-flex align-items-end justify-content-center">
     <div class="alert alert-success d-flex px-5 position-relative opacity-0 mb-5 top-40\">$tab[0]</div>
     <nav class="navbar fixed-top navbar-expand-lg navbar-light p-md-3">
         <div class="container-fluid">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item"><a href="frontController.php" class="nav-link active navbar-brand" aria-current="page">AgoraScript</a></li>
+                <li class="nav-item"><a href="frontController.php" class="nav-link active navbar-brand text-white" aria-current="page">SIDAQuest</a></li>
             </ul>
 
             <?php
@@ -33,7 +33,6 @@ use App\SIDAQuest\Lib\MessageFlash;
                 $login = ConnexionUtilisateur::getLoginUtilisateurConnecte();
                 $loginURL = urlencode($login);
 
-                echo "<a href=\"frontController.php?action=formulairePreference\" class='nav-link active ms-4'><img src=\"img/heart.png\" alt=\"heart\" title=\"coeur\"></a>";
                 echo "<a href=\"frontController.php?controller=utilisateur&action=read&login=$loginURL\"  class=\"nav-link active ms-4\"><img src=\"./img/user.png\" alt=\"informations\" title=\"enter\"></a>";
                 echo "<a href=\"frontController.php?controller=utilisateur&action=deconnecter\" class=\"nav-link active mx-4\"><img src=\"./img/logout.png\" alt=\"logout\" title=\"out\"></a>";
             }
@@ -67,7 +66,7 @@ use App\SIDAQuest\Lib\MessageFlash;
     ?>
 </header>
 
-<main class="d-flex mx-10 flex-column">
+<main class="d-flex mx-10 flex-column bg-color2">
     <?php require __DIR__ . "/$cheminVueBody"; ?>
 </main>
 
@@ -75,7 +74,7 @@ use App\SIDAQuest\Lib\MessageFlash;
 <!--        <script src="JS/switchClairSombre.js"></script>-->
 
 <footer class="text-lg-start h-25 d-flex justify-content-center pt-5">
-    <p class="text-center top-50">© AgoraScript 2022</p>
+    <p class="text-center top-50">NDI SIDAQuest 2022</p>
 </footer>
 </body>
 </html>
