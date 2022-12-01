@@ -2,7 +2,7 @@
 <form method="post" action="frontController.php" ...>
     <fieldset class="">
         <div class="">
-            <label for="login_id" class="form-label">Login</label>
+            <label for="login_id" class="">Login</label>
             <input type="text" placeholder="VirusSlayer891" name="login" id="login_id" class=""/>
         </div>
         <div class="">

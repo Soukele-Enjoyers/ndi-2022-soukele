@@ -1,9 +1,7 @@
 <!DOCTYPE html>
 <?php
+/* @var App\SIDAQuest\Model\DataObject\Utilisateur $utilisateur */
     $loginHTML = htmlspecialchars($utilisateur->getLogin());
-    $nomHTML = htmlspecialchars($utilisateur->getNomUtilisateur());
-    $prenomHTML = htmlspecialchars($utilisateur->getPrenomUtilisateur());
-    $adresseMailHTML = htmlspecialchars($utilisateur->getAdresseMail());
 ?>
 <form method="post" action="frontController.php" ...>
     <fieldset class="">

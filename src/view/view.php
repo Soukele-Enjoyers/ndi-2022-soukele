@@ -1,12 +1,8 @@
 <?php
-use App\SIDAQuest\Config\Conf;
 use App\SIDAQuest\Lib\ConnexionUtilisateur;
 use App\SIDAQuest\Lib\MessageFlash;
+/* @var string $pagetitle */
 
-if (!isset($url))
-{
-    $url = Conf::getUrlBase();
-}
 ?>
 
 <!DOCTYPE html>
@@ -23,26 +19,23 @@ if (!isset($url))
     <nav class="navbar fixed-top navbar-expand-lg navbar-light p-md-3">
         <div class="container-fluid">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item"><a href="<?php echo $url; ?>frontController.php" class="nav-link active navbar-brand" aria-current="page">AgoraScript</a></li>
-                <li class="nav-item"><a href="<?php echo $url; ?>frontController.php?controller=question&action=readAll&etat=0" class="nav-link active">Questions</a></li>
-                <li class="nav-item"><a href="<?php echo $url; ?>frontController.php?controller=question&action=readAll&etat=3" class="nav-link active">Votes</a></li>
-                <li class="nav-item"><a href="<?php echo $url; ?>frontController.php?controller=question&action=readAll&etat=4" class="nav-link active">Résultats</a></li>
+                <li class="nav-item"><a href="frontController.php" class="nav-link active navbar-brand" aria-current="page">AgoraScript</a></li>
             </ul>
 
             <?php
             if (!ConnexionUtilisateur::estConnecte())
             {
-                echo "<a href=\"$url" ."frontController.php?controller=utilisateur&action=connect\" class=\"nav-link active\">Se connecter</a>";
-                echo "<a href=\"$url". "frontController.php?controller=utilisateur&action=create\"  class=\"nav-link active mx-4\">S'inscrire</a>";
+                echo "<a href=\"frontController.php?controller=utilisateur&action=connect\" class=\"nav-link active\">Se connecter</a>";
+                echo "<a href=\"frontController.php?controller=utilisateur&action=create\"  class=\"nav-link active mx-4\">S'inscrire</a>";
             }
             else
             {
                 $login = ConnexionUtilisateur::getLoginUtilisateurConnecte();
                 $loginURL = urlencode($login);
 
-                echo "<a href=\"$url" . "frontController.php?action=formulairePreference\" class='nav-link active ms-4'><img src=\"img/heart.png\" alt=\"heart\" title=\"coeur\"></a>";
-                echo "<a href=\"$url" ."frontController.php?controller=utilisateur&action=read&login=$loginURL\"  class=\"nav-link active ms-4\"><img src=\"./img/user.png\" alt=\"informations\" title=\"enter\"></a>";
-                echo "<a href=\"$url" ."frontController.php?controller=utilisateur&action=deconnecter\" class=\"nav-link active mx-4\"><img src=\"./img/logout.png\" alt=\"logout\" title=\"out\"></a>";
+                echo "<a href=\"frontController.php?action=formulairePreference\" class='nav-link active ms-4'><img src=\"img/heart.png\" alt=\"heart\" title=\"coeur\"></a>";
+                echo "<a href=\"frontController.php?controller=utilisateur&action=read&login=$loginURL\"  class=\"nav-link active ms-4\"><img src=\"./img/user.png\" alt=\"informations\" title=\"enter\"></a>";
+                echo "<a href=\"frontController.php?controller=utilisateur&action=deconnecter\" class=\"nav-link active mx-4\"><img src=\"./img/logout.png\" alt=\"logout\" title=\"out\"></a>";
             }
             ?>
         </div>
