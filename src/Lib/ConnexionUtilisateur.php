@@ -30,12 +30,12 @@ class ConnexionUtilisateur
     public static function getLoginUtilisateurConnecte(): ?string
     {
         $session = Session::getInstance();
-        if (!self::estConnecte()) return null;
+        if (!static::estConnecte()) return null;
         return $session->lire(static::$cleConnexion);
     }
 
     public static function estUtilisateur($login):bool{
-        return strcmp(self::getLoginUtilisateurConnecte(), $login) == 0 && self::estConnecte();
+        return strcmp(static::getLoginUtilisateurConnecte(), $login) == 0 && self::estConnecte();
     }
 
 
