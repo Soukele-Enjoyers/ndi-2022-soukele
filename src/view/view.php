@@ -12,6 +12,13 @@ use App\SIDAQuest\Lib\MessageFlash;
     <title><?php echo $pagetitle; ?></title>
 
     <link href="css/styles/bootstrap.css" rel="stylesheet" type="text/css">
+
+
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="user-scalable=no">
+    <link rel="icon" href="icon/icon.png" type="image/png">
+    <link rel="apple-touch-icon" href="icon/icon.png">
 </head>
 <body class="bg-color d-flex flex-column h-100">
 <header class="fw-bold h-25 d-flex align-items-end justify-content-center">
