@@ -5,8 +5,6 @@ namespace App\SIDAQuest\Controller;
 use App\SIDAQuest\Lib\MessageFlash;
 
 class Controller {
-    //protected abstract function getNomVueError() : string;
-
     protected static function afficheVue(string $cheminVue, array $parametres = []) : void {
         extract($parametres);
         require __DIR__ . "/../view/$cheminVue";

@@ -116,6 +116,9 @@ class ControllerUtilisateur extends Controller {
 
 
     public static function readAll() : void {
-
+        if (ConnexionUtilisateur::estConnecte() && Session::getInstance()->lire("isAdmin")) {
+            $utilisateurs = (new UtilisateurRepository())->selectAll();
+            static::afficheVue("view.php", ["pagetitle" => "Liste des joueurs", "cheminVueBody" => "utilisateurs/list.php", "utilisateurs" => $utilisateurs]);
+        }
     }
 }
