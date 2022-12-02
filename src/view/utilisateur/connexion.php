@@ -10,7 +10,7 @@
                 <label class="form-label" for="password_id">Mot de passe&#42;</label>
                 <input class="form-control" type="password" name="password" id="password_id" required>
 
-                <input type="hidden" name="action" value="connecter">
+                <input type="hidden" name="action" value="connected">
                 <input type="hidden" name="controller" value="utilisateur">
             </div>
 

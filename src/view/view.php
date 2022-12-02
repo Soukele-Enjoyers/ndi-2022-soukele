@@ -2,7 +2,7 @@
 use App\SIDAQuest\Lib\ConnexionUtilisateur;
 use App\SIDAQuest\Lib\MessageFlash;
 /* @var string $pagetitle */
-
+/* @var string $cheminVueBody */
 ?>
 
 <!DOCTYPE html>
@@ -43,25 +43,27 @@ use App\SIDAQuest\Lib\MessageFlash;
     <?php
     if(MessageFlash::contientMessage("warning"))
     {
-        $tab = MessageFlash::lireMessages("warning");
-        echo "<div class=\"alert alert-warning d-flex px-5 position-absolute mb-5\">$tab[0]</div>";
+        foreach (MessageFlash::lireMessages("warning") as $message) {
+            echo "<div class=\"alert alert-warning d-flex px-5 position-absolute mb-5\">$message</div>";
+        }
     }
     else if(MessageFlash::contientMessage("success"))
     {
-        $tab = MessageFlash::lireMessages("success");
-        echo "<div class=\"alert alert-success d-flex px-5 position-absolute mb-5\">$tab[0]</div>";
-
+        foreach (MessageFlash::lireMessages("success") as $message) {
+            echo "<div class=\"alert alert-warning d-flex px-5 position-absolute mb-5\">$message</div>";
+        }
     }
     else if(MessageFlash::contientMessage("info"))
     {
-        $tab = MessageFlash::lireMessages("info");
-        echo "<div class=\"alert alert-info d-flex px-5 position-absolute mb-5\">$tab[0]</div>";
-
+        foreach (MessageFlash::lireMessages("info") as $message) {
+            echo "<div class=\"alert alert-warning d-flex px-5 position-absolute mb-5\">$message</div>";
+        }
     }
     else if(MessageFlash::contientMessage("danger"))
     {
-        $tab = MessageFlash::lireMessages("danger");
-        echo "<div class=\"alert alert-danger d-flex px-5 position-absolute mb-5\">$tab[0]</div>";
+        foreach (MessageFlash::lireMessages("danger") as $message) {
+            echo "<div class=\"alert alert-warning d-flex px-5 position-absolute mb-5\">$message</div>";
+        }
     }
     ?>
 </header>
