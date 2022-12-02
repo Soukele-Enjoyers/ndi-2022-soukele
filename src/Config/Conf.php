@@ -5,10 +5,10 @@ namespace App\SIDAQuest\Config;
 class Conf
 {
     static private array $databases = [
-        'hostname' => 'webinfo.iutmontp.univ-montp2.fr',
-        'database' => 'brizayg',
-        'login' => 'brizayg',
-        'password' => 'tLMuCBMUHq58',
+        'hostname' => '',
+        'database' => '',
+        'login' => '',
+        'password' => '',
     ];
 
     static private int $dureeExpiration = 3600; //Les sessions expirent après 3600 secondes
