@@ -15,10 +15,10 @@ class Conf
 
     static private array $noms = [
         "Gabin" => "",
-        "Hugo" => "http://localhost/SAE/web/"
+        "Hugo" => "http://localhost/ndi-2022-soukele/web/"
     ];
 
-    static private string $quiSuisJe = "Gabin";
+    static private string $quiSuisJe = "Hugo";
 
     public static function getUrlBase() : string {
         return static::$noms[static::$quiSuisJe];

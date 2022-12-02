@@ -40,7 +40,7 @@ class Session {
         unset($_SESSION[$name]);
     }
 
-    public function detruire() : void {
+    public static function detruire() : void {
         session_unset();     // unset $_SESSION variable for the run-time
         session_destroy();   // destroy session data in storage
         Cookie::supprimer(session_name()); // deletes the session cookie

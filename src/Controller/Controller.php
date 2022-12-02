@@ -26,7 +26,7 @@ class Controller {
     }
 
     public static function play() : void {
-        static::afficheVue('view.php', ["pagetitle" => "SIDAQuest", "cheminVueBody" => "game.php"]);
+        static::redirect("./sidaquest/SidaQuest/www/index.html");
     }
 }
 ?>

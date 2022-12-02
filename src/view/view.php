@@ -28,8 +28,8 @@ use App\SIDAQuest\Lib\MessageFlash;
             <ul class="navbar-nav me-auto mb-2">
                 <li class="nav-item"><a href="frontController.php" class="nav-link active navbar-brand" aria-current="page">SIDAQuest</a></li>
             </ul>
-
             <?php
+
             if (!ConnexionUtilisateur::estConnecte())
             {
                 echo "<a href=\"frontController.php?controller=utilisateur&action=connect\" class=\"nav-link active\">Se connecter</a>";
@@ -78,9 +78,6 @@ use App\SIDAQuest\Lib\MessageFlash;
 <main class="d-flex flex-row w-100 justify-content-center">
         <?php require __DIR__ . "/$cheminVueBody"; ?>
 </main>
-
-<!--        <button type="button" id="light">Jour</button>-->
-<!--        <script src="JS/switchClairSombre.js"></script>-->
 
 <footer class="text-lg-start h-25 d-flex justify-content-center pt-5">
     <p class="text-center top-50">NDI SIDAQuest 2022</p>
