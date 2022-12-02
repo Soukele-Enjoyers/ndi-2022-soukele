@@ -5,152 +5,117 @@ namespace App\SIDAQuest\Controller;
 use App\SIDAQuest\Config\Conf;
 use App\SIDAQuest\Lib\ConnexionUtilisateur;
 use App\SIDAQuest\Lib\MessageFlash;
-use App\SIDAQuest\Lib\MotDePasse;
+use App\SIDAQuest\Lib\PasswordUtils;
 use App\SIDAQuest\Model\Repository\UtilisateurRepository;
 use App\SIDAQuest\Model\DataObject\Utilisateur;
 
-class ControllerUtilisateur extends Controller
-{
+class ControllerUtilisateur extends Controller {
 
-    public static function read():void
-    {
+    public static function read() : void {
         $utilisateur = (new UtilisateurRepository())->select($_GET['login']);
         if(is_null($utilisateur)){
-            MessageFlash::ajouter("warning", "Il semblerait que cet utilisateur n'existe pas !");
+            MessageFlash::ajouter("warning", "Ce joueur n'existe pas.");
         }else{
-            self::afficheVue('view.php', Conf::getUrlBase(), ["utilisateur" => $utilisateur, "pagetitle" => "Informations du compte", "cheminVueBody" => "utilisateur/detail.php"]);
+            static::afficheVue('view.php', ["utilisateur" => $utilisateur, "pagetitle" => "Informations du compte", "cheminVueBody" => "utilisateur/detail.php"]);
         }
     }
 
 
-    public static function create(): void{
-        self::afficheVue('view.php', Conf::getUrlBase(), ["pagetitle" => "Formulaire création compte", "cheminVueBody" => "utilisateur/inscription.php"]);
+    public static function create() : void {
+        static::afficheVue('view.php', ["pagetitle" => "Inscription", "cheminVueBody" => "utilisateur/inscription.php"]);
     }
 
-    public static function created(): void
-    {
-        $url = "";// Conf::getUrlBase();
-        $login = $_POST["login"];
-        $loginURL = urlencode($login);
-
-        if(strcmp($_POST['password'], $_POST['password2']) != 0){
-
-            MessageFlash::ajouter("warning", "Mots de passe distincts");
-            self::redirect("$url". "frontController.php?controller=utilisateur&action=create");
-
-        }else if(!is_null((new UtilisateurRepository())->select($_POST['login']))){
-
-            MessageFlash::ajouter("warning", "Login existant !");
-            self::redirect("$url". "frontController.php?controller=utilisateur&action=create");
-
-        }else {
-            MessageFlash::ajouter("success", "L'utilisateur a été créé avec succés");
-            $utilisateursForm = Utilisateur::construireDepuisFormulaire($_POST);
-            (new UtilisateurRepository())->create($utilisateursForm);
-            self::redirect("$url". "frontController.php?controller=utilisateur&action=read&login=$loginURL");
+    public static function created() : void {
+        $url = Conf::getUrlBase();
+        if(strcmp($_POST['password'], $_POST['password2']) != 0) {
+            MessageFlash::ajouter("warning", "Les mots de passe ne correspondent pas.");
+            static::redirect($url . "frontController.php?controller=utilisateur&action=create");
+        } else if (!is_null((new UtilisateurRepository())->select($_POST["login"]))) {
+            MessageFlash::ajouter("warning", "L'identifiant est déjà utilisé.");
+            static::redirect($url . "frontController.php?controller=utilisateur&action=create");
+        } else {
+            MessageFlash::ajouter("success", "Vous avez été enregistré avec succès !");
+            $loginURL = urlencode($_POST["login"]);
+            $utilisateurForm = Utilisateur::construireDepuisFormulaire($_POST);
+            (new UtilisateurRepository())->create($utilisateurForm);
+            static::redirect($url . "frontController.php?controller=utilisateur&action=read&login=$loginURL");
         }
     }
 
-
-    protected function getNomVueError(): string
-    {
-        // TODO: Implement getNomVueError() method.
+    protected function getNomVueError() : string {
         return "utilisateur";
     }
 
-    public static function connect(): void{
-        self::afficheVue('view.php', Conf::getUrlBase(),["pagetitle" => "Formulaire de connexion", "cheminVueBody" => "utilisateur/connexion.php"]);
+    public static function connect() : void {
+        static::afficheVue('view.php', ["pagetitle" => "Connexion", "cheminVueBody" => "utilisateur/connexion.php"]);
     }
 
-    public static function connecter(): void{
-        //MESSAGE FLASH
-
-        $login = $_POST['login'];
+    public static function connected() : void {
+        $login = $_POST["login"];
+        $password = $_POST["password"];
         $utilisateurTemp = (new UtilisateurRepository)->select($login);
-        //$mdpHache = $utilisateurTemp->getMdpHache();
-        $urlBase = "";// Conf::getUrlBase();
-
-        //MESSAGE FLASH
-        if(!isset($login) || !isset($_POST['password'])){
-
-            MessageFlash::ajouter("danger", "login ou mot de passe manquant !");
-            self::redirect($urlBase . "frontController.php?controller=utilisateur&action=connect");
-
-        } else if(is_null($utilisateurTemp)) {
-
-            MessageFlash::ajouter("warning", "login incorrect");
-            self::redirect($urlBase . "frontController.php?controller=utilisateur&action=connect");
-
-        } else if(!MotDePasse::verifier($_POST['password'],  $utilisateurTemp->getMdpHache())){
-
+        $url = Conf::getUrlBase();
+        if(!isset($login) || !isset($password)) {
+            MessageFlash::ajouter("danger", "Identifiant ou mot de passe non renseigné.");
+            static::redirect($url . "frontController.php?controller=utilisateur&action=connect");
+        } else if (is_null($utilisateurTemp)) {
+            MessageFlash::ajouter("warning", "Identifiant incorrect");
+            static::redirect($url . "frontController.php?controller=utilisateur&action=connect");
+        } else if (!PasswordUtils::verifier($_POST['password'],  $utilisateurTemp->getMdpHache())) {
                 MessageFlash::ajouter("warning", "Mot de passe incorrect");
-                self::redirect($urlBase . "frontController.php?controller=utilisateur&action=connect");
-
-        }else {
+                static::redirect($url . "frontController.php?controller=utilisateur&action=connect");
+        } else {
             ConnexionUtilisateur::connecter($login);
             $loginURL = urlencode($login);
-            MessageFlash::ajouter("success", "Vous vous êtes connecté avec succès !");
-            $url = "frontController.php?controller=utilisateur&action=read&login=$loginURL";
-            self::redirect($url);
+            MessageFlash::ajouter("success", "Vous êtes connecté !");
+            static::redirect($url . "frontController.php?controller=utilisateur&action=read&login=$loginURL");
         }
     }
 
-    public static function deconnecter(){
+    public static function disconnect() : void {
         ConnexionUtilisateur::deconnecter();
-        MessageFlash::ajouter("success", "Vous avez été déconnecté !");
-        $url = ""; //Conf::getUrlBase();
-        self::redirect($url . "frontController.php");
+        MessageFlash::ajouter("success", "Déconnexion réalisée avec succès !");
+        $url = Conf::getUrlBase();
+        static::redirect($url . "frontController.php");
     }
 
-    public static function update(): void
-    {
+    public static function update() : void {
         if(!isset($_POST['login'])) $login = $_GET["login"];
         else $login = $_POST['login'];
         $utilisateur = (new UtilisateurRepository())->select($login);
-        self::afficheVue('view.php', Conf::getUrlBase(), ["utilisateur" => $utilisateur, "pagetitle" => "Formulaire changement profil ", "cheminVueBody" => "utilisateur/update.php"]);
+        self::afficheVue('view.php', ["utilisateur" => $utilisateur, "pagetitle" => "Mise à jour du profil", "cheminVueBody" => "utilisateur/update.php"]);
     }
 
-    public static function updated(): void
-    {
+    public static function updated() : void {
         $login = $_POST['login'];
         $temp = (new UtilisateurRepository())->select($login);
-        print_r($temp);
         $mdpHache = $temp->getMdpHache();
         $loginURL = urlencode($login);
-        $url = ""; //Conf::getUrlBase();
-
+        $url = Conf::getUrlBase();
         if (strcmp($_POST['password'], $_POST['password2']) != 0){
-
-            MessageFlash::ajouter("warning", "Mots de passe distincts !");
-            self::redirect($url . "frontController.php?action=update&controller=utilisateur&login=$loginURL");
-
-        }else if (!MotDePasse::verifier($_POST['ancienPassword'], $mdpHache)){
-
-            MessageFlash::ajouter("warning", "Ancien mot de passe erroné !");
-            self::redirect($url . "frontController.php?action=update&controller=utilisateur&login=$loginURL");
-
-        }else {
-
+            MessageFlash::ajouter("warning", "Les mots de passe de correspondent pas.");
+            static::redirect($url . "frontController.php?action=update&controller=utilisateur&login=$loginURL");
+        } else if (!PasswordUtils::verifier($_POST['ancienPassword'], $mdpHache)) {
+            MessageFlash::ajouter("warning", "Ancien mot de passe erroné.");
+            static::redirect($url . "frontController.php?action=update&controller=utilisateur&login=$loginURL");
+        } else {
             $temp->setMdpHache($_POST['password']);
             (new UtilisateurRepository())->update($temp);
-            //$utilisateurs = (new UtilisateurRepository())->selectAll();
-            MessageFlash::ajouter("success", "L'utilisateur a bien été modifié !");
-            self::redirect($url . "frontController.php");
+            MessageFlash::ajouter("success", "Votre mot de passe a bien été modifié !");
+            static::redirect($url . "frontController.php");
         }
     }
 
-    public static function delete(): void
-    {
-        $message = (new UtilisateurRepository())->delete($_POST['login']);
-
-        if (is_null($message)) self::error("Le supression n'a pas fonctionnée");
-        else{
-            MessageFlash::ajouter("success", "L'utilisateur a bien été supprimé !");
-            ControllerUtilisateur::create();
+    public static function delete() : void {
+        if (!(new UtilisateurRepository())->delete($_POST['login'])) static::error("Une erreur est survenue lors de la suppression.");
+        else {
+            MessageFlash::ajouter("success", "L'utilisateur a été supprimé avec succès !");
+            static::redirect(Conf::getUrlBase() . "frontController.php");
         }
-
     }
 
 
-    public static function readAll() : void {}
+    public static function readAll() : void {
+
+    }
 }
