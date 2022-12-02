@@ -2,20 +2,25 @@
 
 namespace App\SIDAQuest\Model\DataObject;
 
-use App\SIDAQuest\Lib\MotDePasse;
+use App\SIDAQuest\Lib\PasswordUtils;
 
 class Utilisateur extends AbstractDataObject {
 
     private string $login;
     private string $mdpHache;
+    private bool $isAdmin; // Database stored: 1 -> TRUE | 0 -> FALSE
 
-    public function __construct(string $login, string $mdp) {
+    public function __construct(string $login, string $mdp, bool $isAdmin) {
         $this->login = $login;
         $this->mdpHache = $mdp;
+        $this->isAdmin = $isAdmin;
     }
 
+    public function formatTableau() : array { return ["loginTag" => $this->login, "passwordTag" => $this->mdpHache, "isAdminTag" => $this->isAdmin ? 1 : 0]; }
 
-    public function formatTableau() : array { return ["loginTag" => $this->login, "passwordTag" => $this->mdpHache];
+    public static function construireDepuisFormulaire(array $tableauFormulaire) : Utilisateur {
+        $mdpHache = PasswordUtils::hacher($tableauFormulaire['password']);
+        return new static($tableauFormulaire['login'], $mdpHache, false);
     }
 
     /**
@@ -26,7 +31,7 @@ class Utilisateur extends AbstractDataObject {
     /**
      * @param string $mdpHache
      */
-    public function setMdpHache(string $mdpClair) : void { $this->mdpHache = MotDePasse::hacher($mdpClair); }
+    public function setMdpHache(string $mdpClair) : void { $this->mdpHache = PasswordUtils::hacher($mdpClair); }
 
     /**
      * @return string
@@ -39,8 +44,13 @@ class Utilisateur extends AbstractDataObject {
      */
     public function setLogin(string $login) : void { $this->login = $login; }
 
-    public static function construireDepuisFormulaire(array $tableauFormulaire) : Utilisateur {
-        $mdpHache = MotDePasse::hacher($tableauFormulaire['password']);
-        return new Utilisateur($tableauFormulaire['login'], $mdpHache);
-    }
+    /**
+     * @return bool
+     */
+    public function isAdmin() : bool { return $this->isAdmin; }
+
+    /**
+     * @param bool $isAdmin
+     */
+    public function setIsAdmin(bool $isAdmin) : void { $this->isAdmin = $isAdmin; }
 }
