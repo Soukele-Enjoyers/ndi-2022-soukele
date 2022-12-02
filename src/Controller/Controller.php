@@ -1,12 +1,11 @@
 <?php
 namespace App\SIDAQuest\Controller;
 
-use App\SIDAQuest\Config\Conf;
+
 use App\SIDAQuest\Lib\MessageFlash;
-use App\SIDAQuest\Lib\PreferenceController;
 
 class Controller {
-    protected abstract function getNomVueError() : string;
+    //protected abstract function getNomVueError() : string;
 
     protected static function afficheVue(string $cheminVue, array $parametres = []) : void {
         extract($parametres);

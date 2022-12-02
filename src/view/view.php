@@ -13,13 +13,13 @@ use App\SIDAQuest\Lib\MessageFlash;
 
     <link href="css/styles/bootstrap.css" rel="stylesheet" type="text/css">
 </head>
-<body class="bg-secondary text-white d-flex flex-column h-100">
+<body class="bg-color d-flex flex-column h-100">
 <header class="fw-bold h-25 d-flex align-items-end justify-content-center">
     <div class="alert alert-success d-flex px-5 position-relative opacity-0 mb-5 top-40\">$tab[0]</div>
     <nav class="navbar fixed-top navbar-expand-lg navbar-light p-md-3">
         <div class="container-fluid">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item"><a href="frontController.php" class="nav-link active navbar-brand text-white" aria-current="page">SIDAQuest</a></li>
+            <ul class="navbar-nav me-auto mb-2">
+                <li class="nav-item"><a href="frontController.php" class="nav-link active navbar-brand" aria-current="page">SIDAQuest</a></li>
             </ul>
 
             <?php
@@ -66,8 +66,8 @@ use App\SIDAQuest\Lib\MessageFlash;
     ?>
 </header>
 
-<main class="d-flex mx-10 flex-column bg-color2">
-    <?php require __DIR__ . "/$cheminVueBody"; ?>
+<main class="d-flex flex-row w-100 justify-content-center">
+        <?php require __DIR__ . "/$cheminVueBody"; ?>
 </main>
 
 <!--        <button type="button" id="light">Jour</button>-->

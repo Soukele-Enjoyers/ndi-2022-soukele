@@ -51,7 +51,7 @@
   --bs-body-bg-rgb: 255, 255, 255;
   --bs-font-sans-serif: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", "Liberation Sans", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   --bs-font-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-  --bs-gradient: linear-gradient(#78688c, 70%, #e18f60);
+  --bs-gradient: linear-gradient(#D6CBC1, 70%, #E16036);
   --bs-body-font-family: var(--bs-font-sans-serif);
   --bs-body-font-size: 1rem;
   --bs-body-font-weight: 400;
@@ -7166,6 +7166,10 @@ textarea.form-control-lg {
   left: 100% !important;
 }
 
+.start-80 {
+  left: 80% !important;
+}
+
 .end-0 {
   right: 0 !important;
 }
@@ -7613,9 +7617,9 @@ textarea.form-control-lg {
   margin-left: 3rem !important;
 }
 
-.mx-10 {
-  margin-right: 10rem !important;
-  margin-left: 10rem !important;
+.mx-20 {
+  margin-right: 20rem !important;
+  margin-left: 20rem !important;
 }
 
 .mx-auto {
@@ -7708,6 +7712,10 @@ textarea.form-control-lg {
 
 .me-5 {
   margin-right: 3rem !important;
+}
+
+.me-20 {
+  margin-right: 20rem !important;
 }
 
 .me-auto {
@@ -8285,11 +8293,11 @@ textarea.form-control-lg {
 }
 
 .bg-color {
-  background-color: #111827;
+  background-color:#E4ECE7;
 }
 
 .bg-color2 {
-  background-color: #111827;
+  background-color: #C7D1CA;
 }
 
 .user-select-all {

@@ -8,8 +8,8 @@ $loader = new App\SIDAQuest\Lib\Psr4AutoloaderClass();
 $loader->addNamespace('App\SIDAQuest', __DIR__ . '/../src');
 $loader->register();
 
-$action = $_REQUEST['action'] ?? "create";
-$controller = $_REQUEST['controller'] ?? "utilisateur";
+$action = $_REQUEST['action'] ?? "accueil";
+$controller = $_REQUEST['controller'] ?? "";
 
 $controllerName = ucfirst($controller);
 
