@@ -8,6 +8,7 @@ use App\SIDAQuest\Lib\MessageFlash;
 use App\SIDAQuest\Lib\PasswordUtils;
 use App\SIDAQuest\Model\Repository\UtilisateurRepository;
 use App\SIDAQuest\Model\DataObject\Utilisateur;
+use App\SIDAQuest\Model\HTTP\Session;
 
 class ControllerUtilisateur extends Controller {
 
@@ -65,7 +66,7 @@ class ControllerUtilisateur extends Controller {
                 MessageFlash::ajouter("warning", "Mot de passe incorrect");
                 static::redirect($url . "frontController.php?controller=utilisateur&action=connect");
         } else {
-            ConnexionUtilisateur::connecter($login);
+            ConnexionUtilisateur::connecter($login, $utilisateurTemp->isAdmin());
             $loginURL = urlencode($login);
             MessageFlash::ajouter("success", "Vous êtes connecté !");
             static::redirect($url . "frontController.php?controller=utilisateur&action=read&login=$loginURL");
@@ -118,7 +119,10 @@ class ControllerUtilisateur extends Controller {
     public static function readAll() : void {
         if (ConnexionUtilisateur::estConnecte() && Session::getInstance()->lire("isAdmin")) {
             $utilisateurs = (new UtilisateurRepository())->selectAll();
-            static::afficheVue("view.php", ["pagetitle" => "Liste des joueurs", "cheminVueBody" => "utilisateurs/list.php", "utilisateurs" => $utilisateurs]);
+            static::afficheVue("view.php", ["pagetitle" => "Liste des joueurs", "cheminVueBody" => "utilisateur/list.php", "utilisateurs" => $utilisateurs]);
+        } else {
+            MessageFlash::ajouter("warning", "Vous n'avez pas accès à cette page.");
+            static::redirect(Conf::getUrlBase() . "frontController.php");
         }
     }
 }

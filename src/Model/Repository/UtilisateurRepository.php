@@ -10,12 +10,11 @@ class UtilisateurRepository extends AbstractRepository
 
     public function getNomTable() : string { return "ndi_users"; }
 
-
-    public function construire(array $utilisateurTableau) : AbstractDataObject { return new Utilisateur($utilisateurTableau["login"], $utilisateurTableau["password"]); }
+    public function construire(array $utilisateurTableau) : AbstractDataObject { return new Utilisateur($utilisateurTableau["login"], $utilisateurTableau["password"], $utilisateurTableau["isAdmin"] === 1); }
 
     public function getNomClePrimaire() : string { return "login"; }
 
-    public function getNomsColonnes() : array { return ["password"]; }
+    public function getNomsColonnes() : array { return ["password", "isAdmin"]; }
 
 
     public function existe(string $login, string $password) : bool {
