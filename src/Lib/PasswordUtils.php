@@ -2,7 +2,7 @@
 
 namespace App\SIDAQuest\Lib;
 
-class MotDePasse
+class PasswordUtils
 {
     // Exécutez genererChaineAleatoire() et stockez sa sortie dans le poivre
     private static string $poivre = "AIk7m8BSRH3X3hNTxsS3C6";
