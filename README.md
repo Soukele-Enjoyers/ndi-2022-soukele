@@ -5,13 +5,21 @@
 ### Auteurs
 
 AZZIN Hamza
+
 BLANCHET Mathieu
+
 BRIZAY Gabin
+
 de LOMBARD de MONTCHALIN Matthieu
+
 JALBAUD Lucas
+
 MORANT Sebastien
+
 PEREAU Florian
+
 SILIVERI Hugo
+
 SOUVIGNET Nathan
 
 
