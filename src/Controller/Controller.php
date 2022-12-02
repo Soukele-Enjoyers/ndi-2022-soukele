@@ -24,5 +24,9 @@ class Controller {
     public static function accueil() : void {
         static::afficheVue('view.php', ["pagetitle" => "SIDAQuest - Accueil", "cheminVueBody" => "accueil.php"]);
     }
+
+    public static function play() : void {
+        static::afficheVue('view.php', ["pagetitle" => "SIDAQuest", "cheminVueBody" => "game.php"]);
+    }
 }
 ?>
