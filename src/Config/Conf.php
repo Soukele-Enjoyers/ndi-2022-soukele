@@ -4,50 +4,43 @@ namespace App\SIDAQuest\Config;
 
 class Conf
 {
-    static private array $databases = array(
+    static private array $databases = [
         'hostname' => 'webinfo.iutmontp.univ-montp2.fr',
         'database' => 'brizayg',
         'login' => 'brizayg',
         'password' => 'tLMuCBMUHq58',
-        'dureeExpiration' => 3600 //Les sessions expirent après 3600 secondes
-    );
+    ];
 
-    static private array $noms = array(
+    static private int $dureeExpiration = 3600; //Les sessions expirent après 3600 secondes
+
+    static private array $noms = [
         "Gabin" => "",
         "Hugo" => "http://localhost/SAE/web/"
-    );
+    ];
 
-    static private string $quiSuisJe = "Hugo";
+    static private string $quiSuisJe = "Gabin";
 
-    public static function getUrlBase () : string
-    {
+    public static function getUrlBase() : string {
         return static::$noms[static::$quiSuisJe];
     }
 
-    static public function getDureeExpiration():int{
-        return static::$databases['dureeExpiration'];
+    static public function getDureeExpiration() : int {
+        return static::$dureeExpiration;
     }
 
-    // static string $url = static::$noms["Vincent"];
-
-
-    static public function getLogin(): string
-    {
+    static public function getLogin() : string {
         return static::$databases['login'];
     }
 
-    static public function getHostname(): string
-    {
+    static public function getHostname() : string {
         return static::$databases['hostname'];
     }
 
-    static public function getDatabase(): string
-    {
+    static public function getDatabase() : string {
         return static::$databases['database'];
     }
 
-    static public function getPassword(): string
-    {
+    static public function getPassword() : string {
         return static::$databases['password'];
     }
 }
